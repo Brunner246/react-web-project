@@ -1,5 +1,8 @@
+
+const { getUserById, updateUserById } = require('./model');
 const express = require('express')
 const app = express()
+app.use(express.json()) // express json middleware
 const port = 3003
 
 app.get('/api', (req, res) => {
@@ -11,6 +14,21 @@ app.post('/api/post', (req, res) => {
   if (req.body) {
     console.log(req.body);
   }
+});
+
+app.get('/api/users/:id', (req, res) => {
+  const { id } = req.params;
+  getUserById(id)
+  .then(user => res.send(user))
+  .catch(err => console.error(err));
+});
+
+app.put('/api/users/:id', (req, res) => {
+  const { id } = req.params;
+  const { name } = req.body;
+  updateUserById(id, name)
+  .then(message => res.send(message))
+  .catch(err => console.error(err));
 });
 
 /*
